@@ -4,6 +4,7 @@
 """
 This module extracts the information from a PDB file and executes basic analysis on it. It considers PDB files that 
 refer to 3D structures of proteins.
+Martha Luka
 """
 
 import os.path
@@ -112,8 +113,8 @@ def chains ():                         #chains in protein
             for line in my_pdb_file:
                 if line.startswith ("SEQRES"):
                     chainsSet.add(line[11])
-            chainsList=list(chainsSet)
-            chainsList.sort()
+            chainsList=list(chainsSet)                        #convert set to list
+            chainsList.sort()                                 #sets are not ordered. This is to order the list created from the set
             return chainsList
         except AttributeError:
             print("No file loaded. kindly load a file first")
@@ -141,7 +142,7 @@ def helicesPerChain (chainsInProtein):
     my_pdb_file.seek(0)
     helixDict ={}                              #initiating an empty dict for helices
     for i in chainsInProtein:
-        helixDict[i]=0
+        helixDict[i]=0                         #default value is zero
     for line in my_pdb_file:
         if line.startswith('HELIX') and line[19] in chainsInProtein:
             helixDict[line[19]] += 1           #number of helices in the different chains of the protein
@@ -154,7 +155,7 @@ def sheetsPerChain (chainsInProtein):
     my_pdb_file.seek(0)
     sheetsDict ={}                             #initiating an empty dict for helices
     for i in chainsInProtein:
-        sheetsDict[i]=0
+        sheetsDict[i]=0                         #default value is zero
     for line in my_pdb_file:
         if line.startswith('SHEET') and line[21] in chainsInProtein:
             sheetsDict[line[21]] += 1         #number of sheets in the different chains of the protein
@@ -244,10 +245,7 @@ def printChains (chainsInProtein):
 %s
                 """ % (chain, numberOfaa, helicesInChain, sheetsInChain, aaSeq))
     printOptions(path)
-    
-    
-    
-    
+ 
 
 
 
@@ -515,7 +513,7 @@ def printSecStr ():
     
     
     aminoAcidsSeqDictMultiLine=generateMultiLine (chainsInProtein, aminoAcidsSeqDict)  #generate multiple lines of all the suitable dictionaries 
-    secStrListDictAllMultiLine=generateMultiLine (chainsInProtein, secStrListDictAll)    #so as to print out the secondary structure at 80 per line
+    secStrListDictAllMultiLine=generateMultiLine (chainsInProtein, secStrListDictAll)    #so as to print out the secondary structure at 80 AA per line
     tagListDictAllMultiLine=generateMultiLine (chainsInProtein, tagListDictAll)
     firstPosDictMultiLine=generateMultiLine (chainsInProtein, firstPosDict)
     lastPosDictMultiLine=generateMultiLine (chainsInProtein, lastPosDict)
